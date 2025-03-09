@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CruxPress - Printing Service</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-print"></i>
+                <span>CruxPress</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container main-content">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">
+                <i class="fas fa-file-invoice"></i>
+                New Print Order
+            </h2>
+        </div>
+
+        <form th:action="@{/quote}" th:object="${order}" method="post">
+            <div class="form-group">
+                <label for="customerName">Customer Name</label>
+                <input type="text" id="customerName" th:field="*{customerName}" placeholder="Enter customer name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="quantity">Quantity (pages)</label>
+                <input type="number" id="quantity" th:field="*{quantity}" min="1" placeholder="Enter number of pages" required>
+            </div>
+
+            <div class="form-group">
+                <label for="paperType">Paper Type</label>
+                <select id="paperType" th:field="*{paperType}" required>
+                    <option value="Standard">Standard</option>
+                    <option value="Standard" disabled>Premium (Coming Soon)</option>
+                    <option value="Standard" disabled>Recycled (Coming Soon)</option>
+                    <option value="Standard" disabled>Glossy (Coming Soon)</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn">
+                <i class="fas fa-calculator"></i> Calculate Quote
+            </button>
+        </form>
+    </div>
+</main>
+</body>
+</html>

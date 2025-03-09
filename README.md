@@ -29,7 +29,7 @@ Each folder is dedicated to a specific language or topic and contains:
 ## **Learn More**
 
 For detailed guides, tutorials, and explanations:
-- **Website**: [Visit Here](https://bytecodecrux.notion.site)
+- **Website**: [Visit Here](https://bcrux.com/)
 - **YouTube Channel:** [BytecodeCrux on YouTube](https://www.youtube.com/@bytecodecrux)
 
 ---
