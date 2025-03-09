@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CruxPress - Quote Result</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <style>
+        /* Additional styles for better organization */
+        .section-header {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+            color: var(--primary);
+        }
+
+        .customer-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .quote-breakdown {
+            margin-top: 10px;
+        }
+
+        /* New pricing table styles */
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .pricing-table td {
+            padding: 15px;
+            background-color: var(--light-bg);
+            border-radius: 6px;
+        }
+
+        .pricing-table tr td:first-child {
+            font-weight: 500;
+            color: var(--secondary);
+        }
+
+        .pricing-table tr td:last-child {
+            text-align: right;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .pricing-table .subtotal-row td {
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background-color: white;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .pricing-table .total-row td {
+            background-color: var(--primary);
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            border-radius: 6px;
+            padding: 20px 15px;
+        }
+
+        .pricing-table .total-row td:first-child {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .pricing-table tr + tr td {
+            margin-top: 10px;
+        }
+
+        .spacer-row td {
+            padding: 8px;
+            background-color: transparent;
+        }
+
+        @media (max-width: 768px) {
+            .customer-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-print"></i>
+                <span>CruxPress</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container main-content">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">
+                <i class="fas fa-receipt"></i>
+                Detailed Price Quotation
+            </h2>
+        </div>
+
+        <!-- Customer Information Section -->
+        <div class="section-header">
+            <i class="fas fa-user"></i> Customer Information
+        </div>
+        <div class="customer-info">
+            <div class="quote-item">
+                <div class="quote-label">Customer Name</div>
+                <div class="quote-value" th:text="${quote.customerName}">April Cooper</div>
+            </div>
+
+            <div class="quote-item">
+                <div class="quote-label">Order Details</div>
+                <div class="quote-value">
+                    <span th:text="${quote.quantity}">750</span> pages,
+                    <span th:text="${quote.paperType}">Standard</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quote Breakdown Section -->
+        <div class="section-header">
+            <i class="fas fa-calculator"></i> Quotation Breakdown
+        </div>
+        <div class="quote-breakdown">
+            <table class="pricing-table">
+                <tr>
+                    <td>Raw Materials</td>
+                    <td>$<span th:text="${formattedRawMaterialCost}">112.50</span></td>
+                </tr>
+                <tr class="spacer-row"><td colspan="2"></td></tr>
+                <tr>
+                    <td>Labor</td>
+                    <td>$<span th:text="${formattedLaborCost}">37.50</span></td>
+                </tr>
+                <tr class="spacer-row"><td colspan="2"></td></tr>
+                <tr>
+                    <td>Overhead</td>
+                    <td>$<span th:text="${formattedOverhead}">22.50</span></td>
+                </tr>
+                <tr class="spacer-row"><td colspan="2"></td></tr>
+                <tr class="subtotal-row">
+                    <td>Subtotal</td>
+                    <td>$<span th:text="${formattedProductionCost}">172.50</span></td>
+                </tr>
+                <tr class="spacer-row"><td colspan="2"></td></tr>
+                <tr>
+                    <td>Tax (8%)</td>
+                    <td>$<span th:text="${formattedTax}">13.80</span></td>
+                </tr>
+                <tr class="spacer-row"><td colspan="2"></td></tr>
+                <tr class="total-row">
+                    <td>TOTAL AMOUNT TO PAY</td>
+                    <td>$<span th:text="${formattedFinalPrice}">186.30</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="actions" style="margin-top: 30px;">
+            <a th:href="@{/}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Order Form
+            </a>
+
+            <form th:action="@{/submit-order}" method="post">
+                <input type="hidden" name="customerName" th:value="${quote.customerName}">
+                <input type="hidden" name="quantity" th:value="${quote.quantity}">
+                <input type="hidden" name="paperType" th:value="${quote.paperType}">
+                <input type="hidden" name="rawMaterialCost" th:value="${quote.rawMaterialCost}">
+                <input type="hidden" name="laborCost" th:value="${quote.laborCost}">
+                <input type="hidden" name="roundedLaborCost" th:value="${quote.roundedLaborCost}">
+                <input type="hidden" name="overhead" th:value="${quote.overhead}">
+                <input type="hidden" name="productionCost" th:value="${quote.productionCost}">
+                <input type="hidden" name="tax" th:value="${quote.tax}">
+                <input type="hidden" name="finalPrice" th:value="${quote.finalPrice}">
+                <button type="submit" class="btn">
+                    <i class="fas fa-paper-plane"></i> Submit Order
+                </button>
+            </form>
+        </div>
+    </div>
+</main>
+</body>
+</html>
